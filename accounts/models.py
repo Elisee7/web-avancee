@@ -1,7 +1,7 @@
 # accounts/models.py
 
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, AbstractUser
 from django.utils import timezone
 
 class UserManager(BaseUserManager):
@@ -25,21 +25,21 @@ class UserManager(BaseUserManager):
         
         return self.create_user(email, username, password, **extra_fields)
 
-class User(AbstractBaseUser, PermissionsMixin):
-    ROLE_CHOICES = (
+class User(AbstractUser):
+    ROLES = (
         ('student', 'Élève'),
         ('teacher', 'Enseignant'),
         ('parent', 'Parent'),
-        ('admin', 'Administrateur'),
     )
     
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=100, unique=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    role = models.CharField(max_length=20, choices=ROLE_CHOICES)
+    role = models.CharField(max_length=20, choices=ROLES)
     serial_number = models.CharField(max_length=50, unique=True, null=True, blank=True)
-    
+
+    password = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
@@ -47,7 +47,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
     
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
+    REQUIRED_FIELDS = ['username', 'role']
     
     def __str__(self):
         return f"{self.first_name} {self.last_name} ({self.role})"
@@ -55,6 +55,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     def get_full_name(self):
         return f"{self.first_name} {self.last_name}"
     
+    def __str__(self):
+        return self.email
+
     @property
     def is_student(self):
         return self.role == 'student'
@@ -67,9 +70,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     def is_parent(self):
         return self.role == 'parent'
     
-    @property
-    def is_admin(self):
-        return self.role == 'admin'
 
 class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='student_profile')

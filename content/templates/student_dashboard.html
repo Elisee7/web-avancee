@@ -1,0 +1,31 @@
+<!--hello world-->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <!-- TailwindCSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div class="container mx-auto max-w-2xl">
+        <div class="bg-white p-8 rounded-lg shadow-lg">
+            <h1 class="text-3xl font-bold text-center mb-6 text-blue-600">Dashboard</h1>
+            <div class="flex justify-center gap-4">
+                <!-- 
+                    <a href="% url 'student-grades' %}" class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300">Notes</a>
+                    <a href="% url 'student-attendance' %}" class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300">Présence</a>
+                    <a href="% url 'student-timetable' %}" class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300">Emploi du temps</a>
+                -->
+                {% if user.is_authenticated %}
+                <p>Bienvenue, {{ user.first_name }} {{ user.last_name }} !</p>
+                <p>Votre email : {{ user.email }}</p>
+            {% else %}
+                <p>Vous n'êtes pas connecté.</p>
+            {% endif %}
+            
+            </div>
+        </div>
+    </div>
+</html>

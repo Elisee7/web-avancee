@@ -150,4 +150,18 @@ CORS_ALLOW_ALL_ORIGINS = True  # Modifier pour la production
 CORS_ALLOW_CREDENTIALS = True
 
 # CSRF settings
-CSRF_TRUSTED_ORIGINS = ['https://*.example.com']  # À modifier
+#CSRF_TRUSTED_ORIGINS = ['https://*.example.com']  # À modifier
+CSRF_TRUSTED_ORIGINS = ['http://localhost:8000', 'http://127.0.0.1:8000']
+
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend'  # Backend standard
+]
+
+SESSION_COOKIE_AGE = 1209600  # 2 semaines en secondes
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
+SESSION_ENGINE = "django.contrib.sessions.backends.db"
+
+LOGIN_URL = '/api/accounts/login/'

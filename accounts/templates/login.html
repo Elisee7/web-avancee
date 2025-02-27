@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr"> 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <!-- TailwindCSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="bg-white p-8 rounded-lg shadow-md w-96">
+        <h1 class="text-center text-4xl font-bold mb-6">Login</h1>
+
+        <form method="post" class="flex flex-col gap-y-4" action="{% url 'token-obtain-pair' %}">
+            {% csrf_token %}
+
+            <div>
+                <label for="email" class="block text-left font-bold">Email:</label>
+                <!-- Remplacer le champ username par email -->
+                <input type="email" 
+                    name="email" 
+                    placeholder="Adresse email"
+                    required
+                    class="w-full p-2 border rounded-lg">
+            </div>
+
+            <div>
+                <label for="password" class="block text-left font-bold">Password:</label>
+                <input type="password" name="password" id="password" placeholder="1234..." 
+                    class="w-full p-2 border rounded outline-none focus:border-green-400 focus:shadow">
+            </div>
+
+            <div>
+                <label for="role" class="block text-left font-bold">Rôle:</label>
+                <select name="role" id="role" class="w-full p-2 border rounded">
+                    <option value="student">Étudiant</option>
+                    <option value="teacher">Enseignant</option>
+                    <option value="parent">Parent</option>  
+                </select>
+            </div>
+
+            <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300">
+                Confirmer
+            </button>
+        </form>
+        {% if error %}
+            <p class="text-red-500">{{ error }}</p>
+        {% endif %}
+    </div>
+</body>
+</html>
